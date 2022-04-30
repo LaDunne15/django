@@ -1,6 +1,4 @@
 from django.contrib import admin
-
-from django.contrib import admin
 from django.shortcuts import get_object_or_404
 from .models import Article, ArticleImage, Category
 from .forms import ArticleImageForm
@@ -40,17 +38,15 @@ class ArticleImageInline(admin.TabularInline):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ("title", "pub_date", "slug", "main_page")
+    list_display = ("title", "category", "pub_date", "slug", "main_page")
     inlines = [ArticleImageInline]
-    multiupload_form = True
-    multiupload_list = False
     prepopulated_fields = {"slug": ("title",)}
     raw_id_fields = ("category",)
     fieldsets = (
         (
             "",
             {
-                "fields": ("pub_date", "title", "description", "main_page"),
+                "fields": ("pub_date", "category", "title", "description", "main_page"),
             },
         ),
         (
