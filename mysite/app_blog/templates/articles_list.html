@@ -1,33 +1,37 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>Публікації</title>
-</head>
+{% load static %}
 
-<body>
-    <a href="/">Головна</a><br />
-    Публікації <br />
-    {% if category %} {{ category }} {% endif %}
-    {% for item in items %}
-    <div class="articles-row">
-        <a href="{{ item.get_absolute_url }}">
+{% block content %}
+{% spaceless %}
+<div>
+    <ol class="breadcrumb">
+        <li><a href="/">Головна</a></li>
+        <li><a href="{% url 'articles-list' %}">Публікації</a></li>
+        <li>{{ item.title|upper }}</li>
+    </ol>
+</div>
+<h3>Публікації</h3>
+<br />
+{% if category %} {{ category }} {% endif %}
 
-            <h4>{{ item.title }}</h4>
-        </a>
-        <h5>
-            {{ item.pub_date|date:"j E Y"|safe|linebreaks }}
-        </h5>
-        <p>
-            {{ item.description|safe|escape|striptags|truncatewords_html:32 }}
-        </p>
-        <div class="container-image">
-            <img class="img" src="{{ item.images.all.0.image.url }}" alt="" />
-        </div>
-        <div class='clearfix'></div>
+{% for item in items %}
+<div class="articles-row">
+    <a href="{{ item.get_absolute_url }}">
+        <h4>{{ item.title }}</h4>
+    </a>
+    <h6>
+        {{ item.pub_date|date:"j E Y"|safe|linebreaks }}
+    </h6>
+    <p class="description">
+        {{ item.description|safe|escape|striptags|truncatewords_html:32 }}
+    </p>
+    <div class="container-image">
+        <img class="img" src="{{ item.images.all.0.image.url }}" alt="" />
     </div>
-    {% endfor %}
-</body>
+    <div class='clearfix'></div>
+</div>
+{% endfor %}
 
-</html>
+{% endspaceless %}
+{% endblock %}
